@@ -4,13 +4,19 @@
   
   
   <entry>
-    <title>Hello World</title>
-    <link href="/2022/02/26/hello-world/"/>
-    <url>/2022/02/26/hello-world/</url>
+    <title>摆隙碎笔</title>
+    <link href="/2022/02/27/%E6%91%86%E9%9A%99%E7%A2%8E%E7%AC%94/"/>
+    <url>/2022/02/27/%E6%91%86%E9%9A%99%E7%A2%8E%E7%AC%94/</url>
     
-    <content type="html"><![CDATA[<p>Welcome to <a href="https://hexo.io/">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues">GitHub</a>.</p><h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">&quot;My New Post&quot;</span></span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/writing.html">Writing</a></p><h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/server.html">Server</a></p><h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/generating.html">Generating</a></p><h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure><p>More info: <a href="https://hexo.io/docs/one-command-deployment.html">Deployment</a></p>]]></content>
+    <content type="html"><![CDATA[<p>个人网站的搭建要比想象中的<del>简单</del>，我也搞不清楚我做这些是为了什么，也许动力只是想耍耍帅吧，就没头苍蝇似的学，总是大概会了就搁浅，慵懒而迷茫，开学却已经迫在眉睫了。<br>日常的事杂七杂八，虽然会有焦虑和苦恼，甚至有时会有恐慌，但更多的是甘醇甜美，这是我的第一篇日志，私人又不算私人，计划又好像散文，纯音乐的潺潺流水声让我平静而又思绪飞扬。  </p><blockquote><p>创作第一，体验第二，避免繁杂，简洁为上！</p></blockquote><p>这是今日学习Hexo博客美化时博主Bob的话。过度的思考与苛求完美只会带来仿生一般的怪异感。<br>接下算是一些简单的规划吧：  </p><ul><li>跟上学校课程，数学物理英语不能落下</li><li>OOP、数据结构、算法总得跟着学吧</li><li>自主尝试做一些Lab</li></ul>]]></content>
     
     
+    
+    <tags>
+      
+      <tag>日志</tag>
+      
+    </tags>
     
   </entry>
   
