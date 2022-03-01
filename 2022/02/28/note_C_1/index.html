@@ -24,7 +24,7 @@
 <meta property="og:description" content="课内问题上课时老师提到了一个经典的问题，即把一个二维数组名直接赋值给一个二级指针会引发的问题： 123456789include&lt;stdio.h&gt;int main()&amp;#123;    int a[3][4] &#x3D; &amp;#123;&amp;#123;1,2,3,4&amp;#125;,&amp;#123;5,6,7,8&amp;#125;,&amp;#123;9,10,11,12&amp;#125;&amp;#125;;    int **q;">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2022-02-27T16:00:00.000Z">
-<meta property="article:modified_time" content="2022-02-28T16:03:47.911Z">
+<meta property="article:modified_time" content="2022-03-01T03:17:18.371Z">
 <meta property="article:author" content="John Doe">
 <meta property="article:tag" content="C语言">
 <meta name="twitter:card" content="summary_large_image">
@@ -42,7 +42,7 @@
     
     
       
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/github-gist.min.css" />
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/gradient-light.min.css" />
     
   
 
@@ -202,7 +202,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.4k 字
+      1.5k 字
     </span>
   
 
@@ -211,7 +211,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      12 分钟
+      13 分钟
     </span>
   
 
@@ -250,14 +250,16 @@
 <p>于是想到了如下两种方法：  </p>
 <ol>
 <li>声明一个指针数组：  <figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-type">int</span> *temp[<span class="hljs-number">3</span>] = &#123;a[<span class="hljs-number">0</span>],a[<span class="hljs-number">1</span>],a[<span class="hljs-number">2</span>]&#125;;<span class="hljs-comment">//依次获取二维数组的“每一行”</span><br>p = temp;<br></code></pre></div></td></tr></table></figure></li>
-<li>采用malloc函数进行内存分配：<figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C">p = (<span class="hljs-type">int</span>** )<span class="hljs-built_in">malloc</span>(<span class="hljs-number">3</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>*));<span class="hljs-comment">//初始化二级指针 </span><br><span class="hljs-keyword">if</span> (p == <span class="hljs-literal">NULL</span>) <br>&#123;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fail to malloc!&quot;</span>);<span class="hljs-comment">//注意判断未成功分配内存的情况</span><br>	<span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>&#125;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i&lt;<span class="hljs-number">3</span>;i++)<br>&#123;<br>	*(p + i) = (<span class="hljs-type">int</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<span class="hljs-comment">//为每一个一级指针分配内存 </span><br>    <span class="hljs-keyword">if</span> (*(p + i) == <span class="hljs-literal">NULL</span>) <br>    &#123;<br>	    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fail to malloc!&quot;</span>);<span class="hljs-comment">//同上</span><br>	    <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>	*(p + i) = a[i];<span class="hljs-comment">//依次赋值 </span><br>&#125;<br>...<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">3</span>;i++)<br>&#123;<br>	<span class="hljs-built_in">free</span>(*(p + i));<span class="hljs-comment">//注意释放内存以免数据泄露，先依次释放每个一级指针</span><br>&#125;<br><span class="hljs-built_in">free</span>(p);<span class="hljs-comment">//释放二级指针</span><br></code></pre></div></td></tr></table></figure>
-<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2>然后想到了使用函数和二级指针为字符串数组间接分配内存:  <h3 id="定义函数MyMalloc"><a href="#定义函数MyMalloc" class="headerlink" title="定义函数MyMalloc"></a>定义函数MyMalloc</h3><strong>形参必须使用二级指针</strong><figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-comment">//用于间接分配内存</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">MyMalloc</span><span class="hljs-params">(<span class="hljs-type">char</span> **ptr,<span class="hljs-type">int</span> size)</span><br>&#123;<br>    <span class="hljs-type">char</span>* temp = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-keyword">if</span>(ptr == <span class="hljs-literal">NULL</span>)<span class="hljs-comment">//判断二级指针ptr是否成功指向pStr</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    temp = (<span class="hljs-type">char</span>*)<span class="hljs-built_in">malloc</span>(size * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">char</span>));<span class="hljs-comment">//申请内存</span><br>    <span class="hljs-keyword">if</span>(temp == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    *ptr = temp;<span class="hljs-comment">//由于ptr指向pStr，所以此式等价于pStr = temp，即成功指向分配的内存</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
-<h3 id="使用函数MyMalloc"><a href="#使用函数MyMalloc" class="headerlink" title="使用函数MyMalloc"></a>使用函数MyMalloc</h3><figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">char</span> *pStr = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">int</span> buffer = <span class="hljs-number">20</span>;<br>    MyMalloc(&amp;pStr,buffer);<span class="hljs-comment">//注意实参是&quot;&amp;pStr&quot;，让形参ptr指向pStr</span><br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
-若使用一级指针作为形参，会导致无法正确分配内存。<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2></li>
+<li>采用malloc函数进行内存分配：<figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C">p = (<span class="hljs-type">int</span>** )<span class="hljs-built_in">malloc</span>(<span class="hljs-number">3</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>*));<span class="hljs-comment">//初始化二级指针 </span><br><span class="hljs-keyword">if</span> (p == <span class="hljs-literal">NULL</span>) <br>&#123;<br>	<span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fail to malloc!&quot;</span>);<span class="hljs-comment">//注意判断未成功分配内存的情况</span><br>	<span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>&#125;<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i&lt;<span class="hljs-number">3</span>;i++)<br>&#123;<br>	*(p + i) = (<span class="hljs-type">int</span>*)<span class="hljs-built_in">malloc</span>(<span class="hljs-number">4</span> * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">int</span>));<span class="hljs-comment">//为每一个一级指针分配内存 </span><br>    <span class="hljs-keyword">if</span> (*(p + i) == <span class="hljs-literal">NULL</span>) <br>    &#123;<br>	    <span class="hljs-built_in">printf</span>(<span class="hljs-string">&quot;fail to malloc!&quot;</span>);<span class="hljs-comment">//同上</span><br>	    <span class="hljs-built_in">exit</span>(<span class="hljs-number">1</span>);<br>    &#125;<br>	*(p + i) = a[i];<span class="hljs-comment">//依次赋值 </span><br>&#125;<br>...<br><span class="hljs-keyword">for</span>(<span class="hljs-type">int</span> i = <span class="hljs-number">0</span>;i &lt; <span class="hljs-number">3</span>;i++)<br>&#123;<br>	<span class="hljs-built_in">free</span>(*(p + i));<span class="hljs-comment">//注意释放内存以免数据泄露，先依次释放每个一级指针</span><br>&#125;<br><span class="hljs-built_in">free</span>(p);<span class="hljs-comment">//释放二级指针</span><br></code></pre></div></td></tr></table></figure></li>
 </ol>
-<ul>
+<h2 id="拓展"><a href="#拓展" class="headerlink" title="拓展"></a>拓展</h2><p>在上述第二种方法中，可以看出对二级指针指向的每一个一级指针都可以比较自由分配内存，在此自然而然地想到自定义一个函数进行<strong>间接分配内存</strong>，由此想到了使用函数和二级指针为字符串数组间接分配内存:  </p>
+<h3 id="定义函数MyMalloc"><a href="#定义函数MyMalloc" class="headerlink" title="定义函数MyMalloc"></a>定义函数MyMalloc</h3><p><strong>形参必须使用二级指针</strong></p>
+<figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-comment">//用于间接分配内存</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">MyMalloc</span><span class="hljs-params">(<span class="hljs-type">char</span> **ptr,<span class="hljs-type">int</span> size)</span><br>&#123;<br>    <span class="hljs-type">char</span>* temp = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-keyword">if</span>(ptr == <span class="hljs-literal">NULL</span>)<span class="hljs-comment">//判断二级指针ptr是否成功指向pStr</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    temp = (<span class="hljs-type">char</span>*)<span class="hljs-built_in">malloc</span>(size * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">char</span>));<span class="hljs-comment">//申请内存</span><br>    <span class="hljs-keyword">if</span>(temp == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    *ptr = temp;<span class="hljs-comment">//由于ptr指向pStr，所以此式等价于pStr = temp，即成功指向分配的内存</span><br>&#125;<br>```  <br>### 使用函数MyMalloc  <br>``` C<br><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">char</span> *pStr = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">int</span> buffer = <span class="hljs-number">20</span>;<br>    MyMalloc(&amp;pStr,buffer);<span class="hljs-comment">//注意实参是&quot;&amp;pStr&quot;，让形参ptr指向pStr</span><br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
+<p>若使用一级指针作为形参，会导致无法正确分配内存。  </p>
+<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
 <li>二级指针需要使用malloc函数初始化分配内存以便使用。</li>
 <li>不能想当然，有疑惑就敲出来看看，善用监视功能。</li>
+<li>参考文章<a target="_blank" rel="noopener" href="https://blog.csdn.net/qq_33375598/article/details/121748468?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522164609900516780274140409%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=164609900516780274140409&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~baidu_landing_v2~default-5-121748468.pc_search_insert_es_download&utm_term=malloc%E4%BA%8C%E7%BA%A7%E6%8C%87%E9%92%88&spm=1018.2226.3001.4187">CSDN</a></li>
 </ul>
 
             </div>
@@ -290,7 +292,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/02/27/%E6%91%86%E9%9A%99%E7%A2%8E%E7%AC%94/">
+                      <a href="/2022/02/26/%E6%91%86%E9%9A%99%E7%A2%8E%E7%AC%94/">
                         <span class="hidden-mobile">摆隙碎笔</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -301,6 +303,35 @@
               
             </div>
 
+            
+              <!-- Comments -->
+              <article class="comments" id="comments" lazyload>
+                
+                  
+                
+                
+  <div id="valine"></div>
+  <script type="text/javascript">
+    Fluid.utils.loadComments('#valine', function() {
+      Fluid.utils.createScript('https://cdn.jsdelivr.net/npm/valine@1/dist/Valine.min.js', function() {
+        var options = Object.assign(
+          {"appId":"bsmM9W6l45thzoEhCqmibQUB-gzGzoHsz","appKey":"NsScttAuecGArRPG1Rl2vN7O","path":"window.location.pathname","placeholder":"穿花衬衫要配上一把乌克丽丽，不然看起来会像流氓兄弟","avatar":"mp","meta":["nick","mail"],"requiredFields":[],"pageSize":10,"lang":"zh-CN","highlight":true,"recordIP":false,"serverURLs":"","emojiCDN":null,"emojiMaps":null,"enableQQ":false},
+          {
+            el: "#valine",
+            path: window.location.pathname
+          }
+        )
+        new Valine(options);
+        Fluid.utils.waitElementVisible('#valine .vcontent', () => {
+          Fluid.plugins.initFancyBox('#valine .vcontent img:not(.vemoji)');
+        })
+      });
+    });
+  </script>
+  <noscript>Please enable JavaScript to view the comments</noscript>
+
+
+              </article>
             
           </article>
         </div>
