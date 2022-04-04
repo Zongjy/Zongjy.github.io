@@ -19,7 +19,7 @@
     <meta name="description" content="最优控制问题 基于gym的实例">
 <meta property="og:type" content="article">
 <meta property="og:title" content="强化学习基础第三讲笔记">
-<meta property="og:url" content="https://sample.com/2022/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E8%AE%B2/index.html">
+<meta property="og:url" content="https://sample.com/2022/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%B8%89)/index.html">
 <meta property="og:site_name" content="zongjy&#39;s blog">
 <meta property="og:description" content="最优控制问题 基于gym的实例">
 <meta property="og:locale" content="zh_CN">
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>强化学习基础第三讲笔记 - zongjy&#39;s blog</title>
+  <title>强化学习基础第三讲笔记 · zongjy&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -67,7 +67,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"sample.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"sample.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -254,6 +254,12 @@
             <!-- SEO header -->
             <h1 style="display: none">强化学习基础第三讲笔记</h1>
             
+              <p class="note note-info">
+                
+                  本文最后更新于：15 天前
+                
+              </p>
+            
             <div class="markdown-body">
               <ul>
 <li>最优控制问题</li>
@@ -353,7 +359,7 @@ E:\Anaconda\Library\bin（jupyter notebook动态库）</p>
 <p>reset()为重新初始化函数，在强化学习算法中，智能体需要一次次地尝试并积累经验，然后从经验中学习好的动作。每次尝试称之为一条轨迹或一个<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>e</mi><mi>p</mi><mi>i</mi><mi>s</mi><mi>o</mi><mi>d</mi><mi>e</mi></mrow><annotation encoding="application/x-tex">episode</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.8888799999999999em;vertical-align:-0.19444em;"></span><span class="mord mathdefault">e</span><span class="mord mathdefault">p</span><span class="mord mathdefault">i</span><span class="mord mathdefault">s</span><span class="mord mathdefault">o</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span></span></span></span>,每次尝试需要到达终止状态。一次尝试结束后，需要<strong>从头开始，即需要智能体重新初始化</strong>。</p>
 <h3 id="2render函数"><a class="markdownIt-Anchor" href="#2render函数"></a> (2)<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">render()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span>函数</h3>
 <p>一个仿真环境必不可少的两部分是物理引擎和图像引擎。物理引擎模拟环境中物体的运动规律；图像引擎用于显示环境中的物体图像。而<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>r</mi><mi>e</mi><mi>n</mi><mi>d</mi><mi>e</mi><mi>r</mi><mo stretchy="false">(</mo><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">render()</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mord mathdefault">e</span><span class="mord mathdefault">n</span><span class="mord mathdefault">d</span><span class="mord mathdefault">e</span><span class="mord mathdefault" style="margin-right:0.02778em;">r</span><span class="mopen">(</span><span class="mclose">)</span></span></span></span>函数就扮演图像引擎的角色。</p>
-<p><em><strong>未完待续……(先补作业)</strong></em></p>
+<p><em><strong>已更新</strong></em>,见<a href="%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E5%9B%9B).md">实例项目</a></p>
 
             </div>
             <hr>
@@ -391,7 +397,7 @@ E:\Anaconda\Library\bin（jupyter notebook动态库）</p>
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/03/13/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E8%AE%B2/">
+                      <a href="/2022/03/13/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%BA%8C)/">
                         <span class="hidden-mobile">强化学习基础第二讲笔记</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>

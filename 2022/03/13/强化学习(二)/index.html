@@ -19,7 +19,7 @@
     <meta name="description" content="线性方程组的迭代解法(高斯-赛德尔迭代法) 基于模型的动态规划方法(策略迭代算法)">
 <meta property="og:type" content="article">
 <meta property="og:title" content="强化学习基础第二讲笔记">
-<meta property="og:url" content="https://sample.com/2022/03/13/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E8%AE%B2/index.html">
+<meta property="og:url" content="https://sample.com/2022/03/13/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%BA%8C)/index.html">
 <meta property="og:site_name" content="zongjy&#39;s blog">
 <meta property="og:description" content="线性方程组的迭代解法(高斯-赛德尔迭代法) 基于模型的动态规划方法(策略迭代算法)">
 <meta property="og:locale" content="zh_CN">
@@ -30,7 +30,7 @@
 <meta name="twitter:card" content="summary_large_image">
   
   
-  <title>强化学习基础第二讲笔记 - zongjy&#39;s blog</title>
+  <title>强化学习基础第二讲笔记 · zongjy&#39;s blog</title>
 
   <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
 
@@ -67,7 +67,7 @@
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"sample.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":""},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    var CONFIG = {"hostname":"sample.com","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
@@ -254,6 +254,12 @@
             <!-- SEO header -->
             <h1 style="display: none">强化学习基础第二讲笔记</h1>
             
+              <p class="note note-info">
+                
+                  本文最后更新于：23 天前
+                
+              </p>
+            
             <div class="markdown-body">
               <ul>
 <li>线性方程组的迭代解法(高斯-赛德尔迭代法)</li>
@@ -402,7 +408,7 @@ v_{t}(s)&amp;=E\left[G_{t}\mid{}s_{t}=s\right]\\
 <li>由上可看出，值函数往往需要多次迭代，但事实上可以不用等到策略评估算法完全收敛。特别的，如果在评估一次后立马进行策略改善，则称为<em>值函数迭代算法</em></li>
 </ul>
 <h2 id="4-值函数迭代算法"><a class="markdownIt-Anchor" href="#4-值函数迭代算法"></a> 4、值函数迭代算法</h2>
-<p>详情请听下回分解……</p>
+<p>详情请听<a href="%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%B8%89).md">下回</a>分解……</p>
 <h1 id="三-总结"><a class="markdownIt-Anchor" href="#三-总结"></a> 三、总结</h1>
 <ul>
 <li>总体有了大概的轮廓，比如说根据有无model采取不同的算法来获取最优策略，以及基于策略、值、或者演员-评论家方法进行值函数的计算和优化策略。</li>
@@ -436,7 +442,7 @@ v_{t}(s)&amp;=E\left[G_{t}\mid{}s_{t}=s\right]\\
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E8%AE%B2/">
+                      <a href="/2022/03/21/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%B8%89)/">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">强化学习基础第三讲笔记</span>
                         <span class="visible-mobile">上一篇</span>
