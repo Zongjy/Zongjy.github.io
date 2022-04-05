@@ -360,17 +360,17 @@ img[lazyload] {
 }
 :root {
   --color-mode: 'light';
-  --body-bg-color: #e9ccd3;
+  --body-bg-color: #c08eaf;
   --board-bg-color: #f0c9cf;
-  --text-color: #3c4858;
-  --sec-text-color: #718096;
+  --text-color: #0f1423;
+  --sec-text-color: #2b333e;
   --post-text-color: #2c3e50;
   --post-heading-color: #1a202c;
   --post-link-color: #0366d6;
   --link-hover-color: #30a9de;
   --link-hover-bg-color: #f8f9fa;
-  --navbar-bg-color: #806d9e;
-  --navbar-text-color: #fff;
+  --navbar-bg-color: #61649f;
+  --navbar-text-color: #e2e1e4;
   --scrollbar-color: #6987b5;
   --scrollbar-hover-color: #a66aa6;
 }
@@ -379,17 +379,17 @@ img[lazyload] {
     --color-mode: 'dark';
   }
   :root:not([data-user-color-scheme]) {
-    --body-bg-color: #15231b;
-    --board-bg-color: #248067;
-    --text-color: #c4c6c9;
-    --sec-text-color: #afb3d6;
+    --body-bg-color: #302f4b;
+    --board-bg-color: #144a74;
+    --text-color: #8fb2c9;
+    --sec-text-color: #5cb3cc;
     --post-text-color: #feeeed;
     --post-heading-color: #c4c6c9;
     --post-link-color: #1589e9;
     --link-hover-color: #30a9de;
     --link-hover-bg-color: #364151;
     --navbar-bg-color: #134857;
-    --navbar-text-color: #d0d0d0;
+    --navbar-text-color: #ccccd6;
     --scrollbar-color: #455c73;
     --scrollbar-hover-color: #37bf8b;
   }
@@ -452,17 +452,17 @@ img[lazyload] {
   }
 }
 [data-user-color-scheme='dark'] {
-  --body-bg-color: #15231b;
-  --board-bg-color: #248067;
-  --text-color: #c4c6c9;
-  --sec-text-color: #afb3d6;
+  --body-bg-color: #302f4b;
+  --board-bg-color: #144a74;
+  --text-color: #8fb2c9;
+  --sec-text-color: #5cb3cc;
   --post-text-color: #feeeed;
   --post-heading-color: #c4c6c9;
   --post-link-color: #1589e9;
   --link-hover-color: #30a9de;
   --link-hover-bg-color: #364151;
   --navbar-bg-color: #134857;
-  --navbar-text-color: #d0d0d0;
+  --navbar-text-color: #ccccd6;
   --scrollbar-color: #455c73;
   --scrollbar-hover-color: #37bf8b;
 }
@@ -1719,11 +1719,11 @@ post-custom {
   border-left: 0.35rem solid;
   border-radius: 0.25rem;
   margin: 1.5rem 0;
-  color: #3c4858;
+  color: #0f1423;
   font-size: 0.9rem;
 }
 .note a {
-  color: #3c4858;
+  color: #0f1423;
 }
 .note *:last-child {
   margin-bottom: 0;
@@ -1763,7 +1763,7 @@ note-default {
   font-size: 85%;
   margin: 0;
   padding: 0.2em 0.4em;
-  color: #3c4858;
+  color: #0f1423;
 }
 .label-default {
   background: #f7f7f7;
