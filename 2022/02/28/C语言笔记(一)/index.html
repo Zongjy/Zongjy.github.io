@@ -214,7 +214,7 @@
   
     <span class="post-meta mr-2">
       <i class="iconfont icon-chart"></i>
-      1.5k 字
+      1.6k 字
     </span>
   
 
@@ -223,7 +223,7 @@
       <i class="iconfont icon-clock-fill"></i>
       
       
-      8 分钟
+      9 分钟
     </span>
   
 
@@ -268,7 +268,7 @@
             
               <p class="note note-info">
                 
-                  本文最后更新于：1 个月前
+                  本文最后更新于：2 个月前
                 
               </p>
             
@@ -291,7 +291,8 @@
 <h2 id="拓展"><a class="markdownIt-Anchor" href="#拓展"></a> 拓展</h2>
 <p>在上述第二种方法中，可以看出对二级指针指向的每一个一级指针都可以比较自由分配内存，在此自然而然地想到自定义一个函数进行<strong>间接分配内存</strong>，由此想到了使用函数和二级指针为字符串数组间接分配内存:</p>
 <h3 id="定义函数mymalloc"><a class="markdownIt-Anchor" href="#定义函数mymalloc"></a> 定义函数MyMalloc：</h3>
-<p><strong>形参必须使用二级指针</strong></p>
+<p><strong>形参必须使用二级指针</strong><br />
+这里由于是对指针进行操作(这里是操作指针，而非是操作指针指向的值)，如果直接用一级指针，那么就相当于是按值传递，传进函数的是该指针的副本，那么可以想象的到，这里需要按地址传递，即采用指针的指针(类似的，如果要对二级指针进行操作，传入函数的形参需定义为三级指针)。(来自于学习链表时的更新💮)</p>
 <figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-comment">//用于间接分配内存</span><br><span class="hljs-type">int</span> <span class="hljs-title function_">MyMalloc</span><span class="hljs-params">(<span class="hljs-type">char</span> **ptr,<span class="hljs-type">int</span> size)</span><br>&#123;<br>    <span class="hljs-type">char</span>* temp = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-keyword">if</span>(ptr == <span class="hljs-literal">NULL</span>)<span class="hljs-comment">//判断二级指针ptr是否成功指向pStr</span><br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    temp = (<span class="hljs-type">char</span>*)<span class="hljs-built_in">malloc</span>(size * <span class="hljs-keyword">sizeof</span>(<span class="hljs-type">char</span>));<span class="hljs-comment">//申请内存</span><br>    <span class="hljs-keyword">if</span>(temp == <span class="hljs-literal">NULL</span>)<br>    &#123;<br>        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;<br>    &#125;<br>    *ptr = temp;<span class="hljs-comment">//由于ptr指向pStr，所以此式等价于pStr = temp，即成功指向分配的内存</span><br>&#125;<br></code></pre></div></td></tr></table></figure>
 <h3 id="使用函数mymalloc"><a class="markdownIt-Anchor" href="#使用函数mymalloc"></a> 使用函数MyMalloc：</h3>
 <figure class="highlight c"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs C"><span class="hljs-type">int</span> <span class="hljs-title function_">main</span><span class="hljs-params">()</span><br>&#123;<br>    <span class="hljs-type">char</span> *pStr = <span class="hljs-literal">NULL</span>;<br>    <span class="hljs-type">int</span> buffer = <span class="hljs-number">20</span>;<br>    MyMalloc(&amp;pStr,buffer);<span class="hljs-comment">//注意实参是&quot;&amp;pStr&quot;，让形参ptr指向pStr</span><br>    ...<br>&#125;<br></code></pre></div></td></tr></table></figure>
@@ -329,9 +330,9 @@
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/03/13/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%BA%8C)/">
+                      <a href="/2022/02/28/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%B8%80)/">
                         <i class="iconfont icon-arrowleft"></i>
-                        <span class="hidden-mobile">强化学习基础第二讲笔记</span>
+                        <span class="hidden-mobile">强化学习基础第一讲笔记</span>
                         <span class="visible-mobile">上一篇</span>
                       </a>
                     
@@ -339,8 +340,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/02/28/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%B8%80)/">
-                        <span class="hidden-mobile">强化学习基础第一讲笔记</span>
+                      <a href="/2022/02/26/%E6%91%86%E9%9A%99%E7%A2%8E%E7%AC%94/">
+                        <span class="hidden-mobile">摆隙碎笔</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
