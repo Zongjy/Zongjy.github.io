@@ -24,6 +24,7 @@
 <meta property="og:description" content="有关powershell的一些问题">
 <meta property="og:locale" content="zh_CN">
 <meta property="og:image" content="https://sample.com/img/cmd1.png">
+<meta property="og:image" content="https://sample.com/source/img/ps1.png">
 <meta property="og:image" content="https://sample.com/img/ps2.png">
 <meta property="og:image" content="https://sample.com/img/ps3.png">
 <meta property="og:image" content="https://sample.com/img/ps4.png">
@@ -332,7 +333,7 @@
 <p>然后在打开的记事本中输入以下语句(脚本文件)：</p>
 <figure class="highlight text"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs text">Import-Module posh-git<br>Import-Module oh-my-posh<br>Set-PoshPrompt -Theme JanDeDobbeleer<br></code></pre></div></td></tr></table></figure>
 <p>前两条应该都看得懂，就是导入插件，最后一句是<code>oh-my-posh3</code>的设置<code>JanDeDobbeleer</code>主题的语句。<br />
-<img src="" srcset="/img/loading.gif" lazyload alt="我就是只打了上面三行" /><br />
+<img src="/source/img/ps1.png" srcset="/img/loading.gif" lazyload alt="我就是只打了上面三行" /><br />
 到这里本该下一步了但是我在官网看到了说的是用下面代码作为<code>init</code>的一行(原谅我没读懂)：</p>
 <figure class="highlight shell"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs shell">oh-my-posh init pwsh --config ~/.jandedobbeleer.omp.json | Invoke-Expression<br></code></pre></div></td></tr></table></figure>
 <p>可以看出来是用的本地<code>json</code>文件(在<code>C:\Users\Username\AppData\Local\oh-my-posh\themes</code>目录里，要打开<strong>隐藏文件显示</strong>)，也可以远程仓库里的：</p>
