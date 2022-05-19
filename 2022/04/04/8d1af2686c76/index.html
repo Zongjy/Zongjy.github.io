@@ -1,7 +1,7 @@
 
 
 <!DOCTYPE html>
-<html lang="zh-CN" data-default-color-scheme=light>
+<html lang="zh-CN" data-default-color-scheme=auto>
 
 
 
@@ -34,30 +34,29 @@
 <meta name="twitter:image" content="https://zongjy.github.io/img/frozenlake1.png">
   
   
+    <meta name="referrer" content="no-referrer-when-downgrade">
+  
+  
   <title>强化学习基础第四讲笔记 · zongjy&#39;s blog</title>
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+  <link  rel="stylesheet" href="https://lib.baomitu.com/twitter-bootstrap/4.6.1/css/bootstrap.min.css" />
 
 
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
 
-  
-    
-    
-      
-      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/gradient-light.min.css" />
-    
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/github-markdown-css/4.0.0/github-markdown.min.css" />
 
-  
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
-  
+  <link  rel="stylesheet" href="https://lib.baomitu.com/hint.css/2.7.0/hint.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.css" />
+
+  <link  rel="stylesheet" href="https://lib.baomitu.com/KaTeX/0.15.2/katex.min.css" />
+
 
 
 <!-- 主题依赖的图标库，不要自行修改 -->
+<!-- Do not modify the link that theme dependent icons -->
 
-<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_hj8rtnfg7um.css">
 
 
 
@@ -66,21 +65,40 @@
 
 <link  rel="stylesheet" href="/css/main.css" />
 
-<!-- 自定义样式保持在最底部 -->
+
+  <link id="highlight-css" rel="stylesheet" href="/css/highlight.css" />
+  
+    <link id="highlight-css-dark" rel="stylesheet" href="/css/highlight-dark.css" />
+  
+
+
 
 
   <script id="fluid-configs">
     var Fluid = window.Fluid || {};
-    var CONFIG = {"hostname":"zongjy.github.io","root":"/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+    Fluid.ctx = Object.assign({}, Fluid.ctx)
+    var CONFIG = {"hostname":"zongjy.github.io","root":"/","version":"1.9.0","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false,"scope":[]},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"left","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"code_language":{"enable":true,"default":"TEXT"},"copy_btn":true,"image_caption":{"enable":true},"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"placement":"right","headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"follow_dnt":true,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/local-search.xml"};
+
+    if (CONFIG.web_analytics.follow_dnt) {
+      var dntVal = navigator.doNotTrack || window.doNotTrack || navigator.msDoNotTrack;
+      Fluid.ctx.dnt = dntVal && (dntVal.startsWith('1') || dntVal.startsWith('yes') || dntVal.startsWith('on'));
+    }
   </script>
   <script  src="/js/utils.js" ></script>
   <script  src="/js/color-schema.js" ></script>
+
+  
 <meta name="generator" content="Hexo 6.0.0"></head>
 
 
 <body>
-  <header style="height: 100vh;">
-    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  
+
+  <header>
+    
+
+<div class="header-inner" style="height: 100vh;">
+  <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
   <div class="container">
     <a class="navbar-brand" href="/">
       <strong>Zongjy&#39;s blog</strong>
@@ -174,6 +192,7 @@
               &nbsp;<i class="iconfont icon-search"></i>&nbsp;
             </a>
           </li>
+          
         
         
           <li class="nav-item" id="color-toggle-btn">
@@ -186,74 +205,86 @@
   </div>
 </nav>
 
-    <div class="banner" id="banner" parallax=true
-         style="background: url('/img/background.jpg') no-repeat center center;
-           background-size: cover;">
-      <div class="full-bg-img">
-        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
-          <div class="page-header text-center fade-in-up">
-            <span class="h2" id="subtitle" title="强化学习基础第四讲笔记">
-              
-            </span>
-
-            
-              <div class="mt-3">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-author" aria-hidden="true"></i>
-      zongjy
-    </span>
-  
-  
-    <span class="post-meta">
-      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
-      <time datetime="2022-04-04 12:29" pubdate>
-        2022-04-04
-      </time>
-    </span>
-  
-</div>
-
-<div class="mt-1">
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-chart"></i>
-      6.4k 字
-    </span>
   
 
-  
-    <span class="post-meta mr-2">
-      <i class="iconfont icon-clock-fill"></i>
-      
-      
-      33 分钟
-    </span>
-  
-
-  
-  
-    
-      <!-- 不蒜子统计文章PV -->
-      <span id="busuanzi_container_page_pv" style="display: none">
-        <i class="iconfont icon-eye" aria-hidden="true"></i>
-        <span id="busuanzi_value_page_pv"></span> 次
-      </span>
-    
-  
-</div>
-
-            
-          </div>
-
+<div id="banner" class="banner" parallax=true
+     style="background: url('/img/background.jpg') no-repeat center center; background-size: cover;">
+  <div class="full-bg-img">
+    <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+      <div class="banner-text text-center fade-in-up">
+        <div class="h2">
           
-            <div class="scroll-down-bar">
-              <i class="iconfont icon-arrowdown"></i>
-            </div>
+            <span id="subtitle" data-typed-text="强化学习基础第四讲笔记"></span>
           
         </div>
+
+        
+          
+  <div class="mt-3">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-author" aria-hidden="true"></i>
+        zongjy
+      </span>
+    
+    
+      <span class="post-meta">
+        <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+        <time datetime="2022-04-04 12:29" pubdate>
+          2022-04-04
+        </time>
+      </span>
+    
+  </div>
+
+  <div class="mt-1">
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-chart"></i>
+        
+          6.4k 字
+        
+      </span>
+    
+
+    
+      <span class="post-meta mr-2">
+        <i class="iconfont icon-clock-fill"></i>
+        
+        
+        
+          33 分钟
+        
+      </span>
+    
+
+    
+    
+      
+        <span id="busuanzi_container_page_pv" style="display: none">
+          <i class="iconfont icon-eye" aria-hidden="true"></i>
+          <span id="busuanzi_value_page_pv"></span> 次
+        </span>
+        
+      
+    
+  </div>
+
+
+        
       </div>
+
+      
+        <div class="scroll-down-bar">
+          <i class="iconfont icon-arrowdown"></i>
+        </div>
+      
     </div>
+  </div>
+</div>
+
+</div>
+
   </header>
 
   <main>
@@ -262,21 +293,20 @@
 
 <div class="container-fluid nopadding-x">
   <div class="row nomargin-x">
-    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+
+    </div>
+
     <div class="col-lg-8 nopadding-x-md">
       <div class="container nopadding-x-md" id="board-ctn">
-        <div class="py-5" id="board">
+        <div id="board">
           <article class="post-content mx-auto">
             <!-- SEO header -->
             <h1 style="display: none">强化学习基础第四讲笔记</h1>
             
-              <p class="note note-info">
-                
-                  本文最后更新于：1 个月前
-                
-              </p>
-            
             <div class="markdown-body">
+              
               <ul>
 <li>FrozenLake—v1(冰湖)环境解释</li>
 <li>基于策略迭代算法(policy-iteration)</li>
@@ -325,7 +355,7 @@
 那么<code>observation_space.n</code>即是16(不知道为什么用Pycharm的时候一开始它会报错，说这个n是未定义的特性引用，大概是因为这是这个模型特有的)</p>
 <h3 id="动作空间action_space"><a class="markdownIt-Anchor" href="#动作空间action_space"></a> 动作空间(action_space)</h3>
 <p>对于这个问题，动作只有四种，即：</p>
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">LEFT: <span class="hljs-number">0</span>  <br>DOWN: <span class="hljs-number">1</span><br>RIGHT: <span class="hljs-number">2</span><br>UP: <span class="hljs-number">3</span><br></code></pre></div></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><code class="hljs python">LEFT: <span class="hljs-number">0</span>  <br>DOWN: <span class="hljs-number">1</span><br>RIGHT: <span class="hljs-number">2</span><br>UP: <span class="hljs-number">3</span><br></code></pre></td></tr></table></figure>
 <h3 id="状态转移概率p"><a class="markdownIt-Anchor" href="#状态转移概率p"></a> 状态转移概率P</h3>
 <p><code>P[state][action]</code>: 指在状态<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>采取动作<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>的状态转移概率，在本题中，由于规则要求，比如选择动作0(即向左)，那么有三分之一的概率向上，三分之一概率向下，和三分之一概率向左。</p>
 <blockquote>
@@ -359,11 +389,11 @@
 <h2 id="策略迭代算法"><a class="markdownIt-Anchor" href="#策略迭代算法"></a> 策略迭代算法</h2>
 <p>总体思路请参照前述<a href="%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%BA%8C).md">策略迭代</a>部分，下面是各步骤源码和一些解释。<br />
 整体为两部分，第一部分是策略迭代，其中包括策略评估(迭代计算状态值函数<code>value_table</code>)和策略改善(通过动作状态值函数q选择最佳策略)，第二部分是对该模型执行策略(<code>run policy</code>)，每轮执行是一个episode。</p>
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        <span class="hljs-comment"># 初始化一个新的v表，注意下面迭代计算v表时使用的+=，所以这里应该将其初始化为0</span><br>        new_value_table = np.zeros(env.observation_space.n)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 从待评估策略中提取动作</span><br>            action = policy[state]<br>            <span class="hljs-comment"># 对每种可能的状态转移过程进行求和得到新v表</span><br>            <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                new_value_table[state] += prob * (reward + gamma * value_table[next_state])<br>        <span class="hljs-comment"># 计算两表误差，当误差小于限定精度时退出迭代</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回待评估策略得到的状态值函数</span><br>    <span class="hljs-keyword">return</span> value_table<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">improve_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 复制一份旧策略</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化一个q函数，注意大小</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-comment"># 对每个动作求状态动作值函数</span><br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 利用argmax返回q函数的最大值索引，即在state对应的价值最大的action，作为该state的策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 比较新旧策略的每一项，若都相等即退出迭代</span><br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):  <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回改善后的策略</span><br>    <span class="hljs-keyword">return</span> policy<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">policy_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, iterations=<span class="hljs-number">10000</span></span>):<br>    <span class="hljs-comment"># 初始化原始策略，这里选择利用随机的方式</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化原始状态值函数，每个状态均为0</span><br>    value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 计算迭代次数</span><br>    iters = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(iterations):<br>        iters += <span class="hljs-number">1</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-comment"># 策略评估</span><br>        value_table = evaluate_policy(env, value_table, policy, gamma)<br>        <span class="hljs-comment"># 策略改善</span><br>        policy = improve_policy(env, value_table, policy, gamma)<br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):<br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回状态值函数，最优策略，策略迭代次数</span><br>    <span class="hljs-keyword">return</span> value_table, policy, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-comment"># 初始化状态</span><br>    state = env.reset()<br>    <span class="hljs-comment"># 第1帧</span><br>    env.render()<br>    <span class="hljs-comment"># 初始化这一轮episode的总价值和帧数</span><br>    tot_reward, num_step = <span class="hljs-number">0</span>, <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 采用policy中当前state对应的action，得到next_state，回报和终止判断</span><br>        next_state, reward, done, _ = env.step(policy[state])<br>        <span class="hljs-comment"># 可以选择env.render(mode=&#x27;ansi&#x27;)</span><br>        env.render()<br>        <span class="hljs-comment"># 计算总价值，注意该步的价值等于衰减系数的当前帧数次方乘上这一次状态转移的回报</span><br>        tot_reward += gamma ** num_step * reward<br>        num_step += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> done:<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-comment"># 更新状态</span><br>        state = next_state<br>    <span class="hljs-comment"># 返回总价值和结束时的帧数</span><br>    <span class="hljs-keyword">return</span> tot_reward, num_step<br><br><br>env = gym.make(<span class="hljs-string">&#x27;FrozenLake-v1&#x27;</span>, desc=<span class="hljs-literal">None</span>, map_name=<span class="hljs-string">&quot;4x4&quot;</span>) <span class="hljs-comment"># 使用默认的4x4地图</span><br><span class="hljs-comment"># 衰减系数</span><br>gamma = <span class="hljs-number">1.0</span><br><span class="hljs-comment"># 策略迭代</span><br>value, policy, iters = policy_iterate(env, iterations=<span class="hljs-number">1000</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;policy:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(policy)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;iterations:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(iters)<br><span class="hljs-keyword">for</span> episode <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>):<br>    cum_reward, nsteps = run_policy(env, policy)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Episode &#123;&#125;:\nreward:&#123;&#125;\tsteps:&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(episode + <span class="hljs-number">1</span>, cum_reward, nsteps))<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        <span class="hljs-comment"># 初始化一个新的v表，注意下面迭代计算v表时使用的+=，所以这里应该将其初始化为0</span><br>        new_value_table = np.zeros(env.observation_space.n)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 从待评估策略中提取动作</span><br>            action = policy[state]<br>            <span class="hljs-comment"># 对每种可能的状态转移过程进行求和得到新v表</span><br>            <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                new_value_table[state] += prob * (reward + gamma * value_table[next_state])<br>        <span class="hljs-comment"># 计算两表误差，当误差小于限定精度时退出迭代</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回待评估策略得到的状态值函数</span><br>    <span class="hljs-keyword">return</span> value_table<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">improve_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 复制一份旧策略</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化一个q函数，注意大小</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-comment"># 对每个动作求状态动作值函数</span><br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 利用argmax返回q函数的最大值索引，即在state对应的价值最大的action，作为该state的策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 比较新旧策略的每一项，若都相等即退出迭代</span><br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):  <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回改善后的策略</span><br>    <span class="hljs-keyword">return</span> policy<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">policy_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, iterations=<span class="hljs-number">10000</span></span>):<br>    <span class="hljs-comment"># 初始化原始策略，这里选择利用随机的方式</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化原始状态值函数，每个状态均为0</span><br>    value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 计算迭代次数</span><br>    iters = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(iterations):<br>        iters += <span class="hljs-number">1</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-comment"># 策略评估</span><br>        value_table = evaluate_policy(env, value_table, policy, gamma)<br>        <span class="hljs-comment"># 策略改善</span><br>        policy = improve_policy(env, value_table, policy, gamma)<br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):<br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回状态值函数，最优策略，策略迭代次数</span><br>    <span class="hljs-keyword">return</span> value_table, policy, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-comment"># 初始化状态</span><br>    state = env.reset()<br>    <span class="hljs-comment"># 第1帧</span><br>    env.render()<br>    <span class="hljs-comment"># 初始化这一轮episode的总价值和帧数</span><br>    tot_reward, num_step = <span class="hljs-number">0</span>, <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 采用policy中当前state对应的action，得到next_state，回报和终止判断</span><br>        next_state, reward, done, _ = env.step(policy[state])<br>        <span class="hljs-comment"># 可以选择env.render(mode=&#x27;ansi&#x27;)</span><br>        env.render()<br>        <span class="hljs-comment"># 计算总价值，注意该步的价值等于衰减系数的当前帧数次方乘上这一次状态转移的回报</span><br>        tot_reward += gamma ** num_step * reward<br>        num_step += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> done:<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-comment"># 更新状态</span><br>        state = next_state<br>    <span class="hljs-comment"># 返回总价值和结束时的帧数</span><br>    <span class="hljs-keyword">return</span> tot_reward, num_step<br><br><br>env = gym.make(<span class="hljs-string">&#x27;FrozenLake-v1&#x27;</span>, desc=<span class="hljs-literal">None</span>, map_name=<span class="hljs-string">&quot;4x4&quot;</span>) <span class="hljs-comment"># 使用默认的4x4地图</span><br><span class="hljs-comment"># 衰减系数</span><br>gamma = <span class="hljs-number">1.0</span><br><span class="hljs-comment"># 策略迭代</span><br>value, policy, iters = policy_iterate(env, iterations=<span class="hljs-number">1000</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;policy:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(policy)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;iterations:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(iters)<br><span class="hljs-keyword">for</span> episode <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>):<br>    cum_reward, nsteps = run_policy(env, policy)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Episode &#123;&#125;:\nreward:&#123;&#125;\tsteps:&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(episode + <span class="hljs-number">1</span>, cum_reward, nsteps))<br></code></pre></td></tr></table></figure>
 <p>对于numpy包，有时间会记录一些学习笔记，这里放一个<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">官方教程</a>,这是一个很好的处理多维数据(譬如对于复杂的多维状态空间，动作空间，或者说数据处理统计分类时起很大的作用)的包，在安装anaconda时会同时附加安装。</p>
 <p>另外需要注意一点，初始化策略时，这里使用的是<code>np.random.randint</code>，所以策略中的动作均为整数符合条件，如果用<code>np.zeros</code>初始化，注意要将默认参数改为<code>dtype='int'</code>(默认为<code>float64</code>型)</p>
 <h2 id="值函数迭代"><a class="markdownIt-Anchor" href="#值函数迭代"></a> 值函数迭代</h2>
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">value_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    <span class="hljs-comment"># 初始化策略</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化值函数，这里可以在循环外只初始化依次用于迭代的表是因为下面使用的是max进行赋值，而区别于策略迭代的+=</span><br>    value_table = np.zeros(env.observation_space.n)<br>    new_value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 迭代次数和迭代误差</span><br>    iters = <span class="hljs-number">0</span><br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        iters += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化q函数</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 选取q函数中价值最大的action，用于更新v表，即相当于只迭代评估计算一次v表立即进行策略改进</span><br>            new_value_table[state] = <span class="hljs-built_in">max</span>(q_value)<br>            <span class="hljs-comment"># 找q函数的最大值索引，更新策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 计算迭代前后v表误差</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        <span class="hljs-comment"># 更新v表,注意要用copy进行拷贝</span><br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回策略，值函数和值迭代次数</span><br>    <span class="hljs-keyword">return</span> policy, value_table, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br><span class="hljs-comment"># 同策略迭代</span><br></code></pre></div></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">value_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    <span class="hljs-comment"># 初始化策略</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化值函数，这里可以在循环外只初始化依次用于迭代的表是因为下面使用的是max进行赋值，而区别于策略迭代的+=</span><br>    value_table = np.zeros(env.observation_space.n)<br>    new_value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 迭代次数和迭代误差</span><br>    iters = <span class="hljs-number">0</span><br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        iters += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化q函数</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 选取q函数中价值最大的action，用于更新v表，即相当于只迭代评估计算一次v表立即进行策略改进</span><br>            new_value_table[state] = <span class="hljs-built_in">max</span>(q_value)<br>            <span class="hljs-comment"># 找q函数的最大值索引，更新策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 计算迭代前后v表误差</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        <span class="hljs-comment"># 更新v表,注意要用copy进行拷贝</span><br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回策略，值函数和值迭代次数</span><br>    <span class="hljs-keyword">return</span> policy, value_table, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br><span class="hljs-comment"># 同策略迭代</span><br></code></pre></td></tr></table></figure>
 <p>需要注意的是更新值函数时都需要用copy，而不是直接赋值(srds我也不知道为什么策略迭代直接赋值不会出问题)，原因是python的一些特性：</p>
 <blockquote>
 <p>Python 赋值过程中不明确区分拷贝和引用，一般对静态变量的传递为拷贝，对动态变量的传递为引用。（注，对静态变量首次传递时也是引用，当需要修改静态变量时，因为静态变量不能改变，所以需要生成一个新的空间存储数据）。</p>
@@ -409,7 +439,7 @@
 <li>G: goal(终点)</li>
 </ul>
 <h3 id="最佳策略和gui演示"><a class="markdownIt-Anchor" href="#最佳策略和gui演示"></a> 最佳策略和GUI演示</h3>
-<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">policy:[<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]<br></code></pre></div></td></tr></table></figure>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><code class="hljs python">policy:[<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]<br></code></pre></td></tr></table></figure>
 <p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MZ4y1U7ab?share_source=copy_web">视频演示</a><br />
 别骂了别骂了，什么dplayer插件是真的用不来啊😤😤，捏麻麻的折腾了一下午都没弄懂，有会的大佬就帮助一下吧。。。<br />
 另外可以看到pycharm是会警告的，原因是这个环境中调用的<code>distutils.spawn</code>即将在<code>python3.12</code>移除(现已废弃)，但不妨碍正常运行。</p>
@@ -431,33 +461,78 @@
 <li><a target="_blank" rel="noopener" href="https://blog.csdn.net/SL_World/article/details/107943298?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-0.pc_relevant_default&amp;spm=1001.2101.3001.4242.1&amp;utm_relevant_index=3">CSDN</a></li>
 </ul>
 
+              
             </div>
-            <hr>
+            <hr/>
             <div>
-              <div class="post-metas mb-3">
-                
-                
-                  <div class="post-meta">
-                    <i class="iconfont icon-tags"></i>
-                    
-                      <a class="hover-with-bg" href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">强化学习基础</a>
-                    
-                  </div>
-                
-              </div>
+              <div class="post-metas my-3">
+  
+  
+    <div class="post-meta">
+      <i class="iconfont icon-tags"></i>
+      
+        <a href="/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">#强化学习基础</a>
+      
+    </div>
+  
+</div>
+
+
               
-                <p class="note note-warning">
-                  
-                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
-                  
-                </p>
+  
+
+  <div class="license-box my-3">
+    <div class="license-title">
+      <div>强化学习基础第四讲笔记</div>
+      <div>https://zongjy.github.io/2022/04/04/8d1af2686c76/</div>
+    </div>
+    <div class="license-meta">
+      
+        <div class="license-meta-item">
+          <div>作者</div>
+          <div>zongjy</div>
+        </div>
+      
+      
+        <div class="license-meta-item license-meta-date">
+          <div>发布于</div>
+          <div>2022年4月4日</div>
+        </div>
+      
+      
+      <div class="license-meta-item">
+        <div>许可协议</div>
+        <div>
+          
+            
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="BY - 署名">
+                <i class="iconfont icon-by"></i>
+              </span>
+              </a>
+            
+              <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/">
+              <span class="hint--top hint--rounded" aria-label="SA - 相同方式共享">
+                <i class="iconfont icon-sa"></i>
+              </span>
+              </a>
+            
+          
+        </div>
+      </div>
+    </div>
+    <div class="license-icon iconfont"></div>
+  </div>
+
+
+
               
-              
-                <div class="post-prevnext">
+                <div class="post-prevnext my-3">
                   <article class="post-prev col-6">
                     
                     
-                      <a href="/2022/04/05/a46989d825cc/">
+                      <a href="/2022/04/05/a46989d825cc/" title="清明小记">
                         <i class="iconfont icon-arrowleft"></i>
                         <span class="hidden-mobile">清明小记</span>
                         <span class="visible-mobile">上一篇</span>
@@ -467,7 +542,7 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/03/29/6052a53e5e91/">
+                      <a href="/2022/03/29/6052a53e5e91/" title="C语言笔记(二)">
                         <span class="hidden-mobile">C语言笔记(二)</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
@@ -483,19 +558,54 @@
         </div>
       </div>
     </div>
-    
-      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
-        <div id="toc">
+
+    <div class="side-col d-none d-lg-block col-lg-2">
+      
+  <aside class="sidebar" style="margin-left: -1rem">
+    <div id="toc">
   <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
   <div class="toc-body" id="toc-body"></div>
 </div>
 
-      </div>
-    
+
+
+  </aside>
+
+
+    </div>
   </div>
 </div>
 
-<!-- Custom -->
+
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+
+  
+
+
+  
+  
+
+
+
+
+
 
 
     
@@ -520,59 +630,61 @@
       <div class="modal-body mx-3">
         <div class="md-form mb-5">
           <input type="text" id="local-search-input" class="form-control validate">
-          <label data-error="x" data-success="v"
-                 for="local-search-input">关键词</label>
+          <label data-error="x" data-success="v" for="local-search-input">关键词</label>
         </div>
         <div class="list-group" id="local-search-result"></div>
       </div>
     </div>
   </div>
 </div>
+
     
 
     
   </main>
 
-  <footer class="text-center mt-5 py-3">
-  <div class="footer-content">
-     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
-  </div>
+  <footer>
+    <div class="footer-inner">
   
-  <div class="statistics">
-    
-    
-
-    
-      
-        <!-- 不蒜子统计PV -->
-        <span id="busuanzi_container_site_pv" style="display: none">
-            总访问量 
-            <span id="busuanzi_value_site_pv"></span>
-             次
-          </span>
-      
-      
-        <!-- 不蒜子统计UV -->
-        <span id="busuanzi_container_site_uv" style="display: none">
-            总访客数 
-            <span id="busuanzi_value_site_uv"></span>
-             人
-          </span>
-      
-    
-  </div>
-
-
+    <div class="footer-content">
+       <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+    </div>
+  
+  
+    <div class="statistics">
+  
   
 
   
-</footer>
-
-
-  <!-- SCRIPTS -->
+    
+      <span id="busuanzi_container_site_pv" style="display: none">
+        总访问量 
+        <span id="busuanzi_value_site_pv"></span>
+         次
+      </span>
+    
+    
+      <span id="busuanzi_container_site_uv" style="display: none">
+        总访客数 
+        <span id="busuanzi_value_site_uv"></span>
+         人
+      </span>
+    
+    
   
-  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
-  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+</div>
+
+  
+  
+  
+</div>
+
+  </footer>
+
+  <!-- Scripts -->
+  
+  <script  src="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://lib.baomitu.com/nprogress/0.2.0/nprogress.min.css" />
 
   <script>
     NProgress.configure({"showSpinner":false,"trickleSpeed":100})
@@ -583,15 +695,29 @@
   </script>
 
 
-<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
-<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="https://lib.baomitu.com/jquery/3.6.0/jquery.min.js" ></script>
+<script  src="https://lib.baomitu.com/twitter-bootstrap/4.6.1/js/bootstrap.min.js" ></script>
 <script  src="/js/events.js" ></script>
 <script  src="/js/plugins.js" ></script>
 
-<!-- Plugins -->
+
+  <script  src="https://lib.baomitu.com/typed.js/2.0.12/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var subtitle = document.getElementById('subtitle');
+      if (!subtitle || !typing) {
+        return;
+      }
+      var text = subtitle.getAttribute('data-typed-text');
+      
+        typing(text);
+      
+    })(window, document);
+  </script>
 
 
-  <script  src="/js/local-search.js" ></script>
+
 
 
 
@@ -601,65 +727,155 @@
 
 
 
-  
-
-
 
   
-    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
-  
-  
-    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
-  
-  
-    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
-  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/tocbot/4.18.0/tocbot.min.js', function() {
+    var toc = jQuery('#toc');
+    if (toc.length === 0 || !window.tocbot) { return; }
+    var boardCtn = jQuery('#board-ctn');
+    var boardTop = boardCtn.offset().top;
+
+    window.tocbot.init({
+      tocSelector     : '#toc-body',
+      contentSelector : '.markdown-body',
+      headingSelector : CONFIG.toc.headingSelector || 'h1,h2,h3,h4,h5,h6',
+      linkClass       : 'tocbot-link',
+      activeLinkClass : 'tocbot-active-link',
+      listClass       : 'tocbot-list',
+      isCollapsedClass: 'tocbot-is-collapsed',
+      collapsibleClass: 'tocbot-is-collapsible',
+      collapseDepth   : CONFIG.toc.collapseDepth || 0,
+      scrollSmooth    : true,
+      headingsOffset  : -boardTop
+    });
+    if (toc.find('.toc-list-item').length > 0) {
+      toc.css('visibility', 'visible');
+    }
+  });
+</script>
 
 
+  <script>
+  (function() {
+    var enableLang = CONFIG.code_language.enable && CONFIG.code_language.default;
+    var enableCopy = CONFIG.copy_btn;
+    if (!enableLang && !enableCopy) {
+      return;
+    }
+
+    function getBgClass(ele) {
+      return Fluid.utils.getBackgroundLightness(ele) >= 0 ? 'code-widget-light' : 'code-widget-dark';
+    }
+
+    var copyTmpl = '';
+    copyTmpl += '<div class="code-widget">';
+    copyTmpl += 'LANG';
+    copyTmpl += '</div>';
+    jQuery('.markdown-body pre').each(function() {
+      var $pre = jQuery(this);
+      if ($pre.find('code.mermaid').length > 0) {
+        return;
+      }
+      if ($pre.find('span.line').length > 0) {
+        return;
+      }
+
+      var lang = '';
+
+      if (enableLang) {
+        lang = CONFIG.code_language.default;
+        if ($pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2 && $pre.children().hasClass('hljs')) {
+          lang = $pre[0].children[0].classList[1];
+        } else if ($pre[0].getAttribute('data-language')) {
+          lang = $pre[0].getAttribute('data-language');
+        } else if ($pre.parent().hasClass('sourceCode') && $pre[0].children.length > 0 && $pre[0].children[0].classList.length >= 2) {
+          lang = $pre[0].children[0].classList[1];
+          $pre.parent().addClass('code-wrapper');
+        } else if ($pre.parent().hasClass('markdown-body') && $pre[0].classList.length === 0) {
+          $pre.wrap('<div class="code-wrapper"></div>');
+        }
+        lang = lang.toUpperCase().replace('NONE', CONFIG.code_language.default);
+      }
+      $pre.append(copyTmpl.replace('LANG', lang).replace('code-widget">',
+        getBgClass($pre[0]) + (enableCopy ? ' code-widget copy-btn" data-clipboard-snippet><i class="iconfont icon-copy"></i>' : ' code-widget">')));
+
+      if (enableCopy) {
+        Fluid.utils.createScript('https://lib.baomitu.com/clipboard.js/2.0.10/clipboard.min.js', function() {
+          var clipboard = new window.ClipboardJS('.copy-btn', {
+            target: function(trigger) {
+              var nodes = trigger.parentNode.childNodes;
+              for (var i = 0; i < nodes.length; i++) {
+                if (nodes[i].tagName === 'CODE') {
+                  return nodes[i];
+                }
+              }
+            }
+          });
+          clipboard.on('success', function(e) {
+            e.clearSelection();
+            e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-copy', 'icon-success');
+            setTimeout(function() {
+              e.trigger.innerHTML = e.trigger.innerHTML.replace('icon-success', 'icon-copy');
+            }, 2000);
+          });
+        });
+      }
+    });
+  })();
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/anchor-js/4.3.1/anchor.min.js', function() {
+    window.anchors.options = {
+      placement: CONFIG.anchorjs.placement,
+      visible  : CONFIG.anchorjs.visible
+    };
+    if (CONFIG.anchorjs.icon) {
+      window.anchors.options.icon = CONFIG.anchorjs.icon;
+    }
+    var el = (CONFIG.anchorjs.element || 'h1,h2,h3,h4,h5,h6').split(',');
+    var res = [];
+    for (var item of el) {
+      res.push('.markdown-body > ' + item.trim());
+    }
+    if (CONFIG.anchorjs.placement === 'left') {
+      window.anchors.options.class = 'anchorjs-link-left';
+    }
+    window.anchors.add(res.join(', '));
+  });
+</script>
+
+
+  
+<script>
+  Fluid.utils.createScript('https://lib.baomitu.com/fancybox/3.5.7/jquery.fancybox.min.js', function() {
+    Fluid.plugins.fancyBox();
+  });
+</script>
+
+
+  <script>Fluid.plugins.imageCaption();</script>
+
+  <script  src="/js/local-search.js" ></script>
 
   <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
 
 
 
 
-  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
-  <script>
-    (function (window, document) {
-      var typing = Fluid.plugins.typing;
-      var title = document.getElementById('subtitle').title;
-      
-        typing(title);
-      
-    })(window, document);
-  </script>
 
-
-
-
-
-  
-
-  
-    <!-- KaTeX -->
-    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
-  
-
-
-
-
-
-
-
-
-
-
-
-<!-- 主题的启动项 保持在最底部 -->
+<!-- 主题的启动项，将它保持在最底部 -->
+<!-- the boot of the theme, keep it at the bottom -->
 <script  src="/js/boot.js" ></script>
 
 
+  
+
+  <noscript>
+    <div class="noscript-warning">博客在允许 JavaScript 运行的环境下浏览效果更佳</div>
+  </noscript>
 </body>
 </html>
