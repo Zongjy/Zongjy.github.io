@@ -1,0 +1,665 @@
+
+
+<!DOCTYPE html>
+<html lang="zh-CN" data-default-color-scheme=light>
+
+
+
+<head>
+  <meta charset="UTF-8">
+  <link rel="apple-touch-icon" sizes="76x76" href="/Zongjy.github.io/img/favicon.png">
+  <link rel="icon" href="/Zongjy.github.io/img/favicon.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, shrink-to-fit=no">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  
+  <meta name="theme-color" content="#61649f">
+  <meta name="author" content="zongjy">
+  <meta name="keywords" content="">
+  
+    <meta name="description" content="FrozenLake—v1(冰湖)环境解释 基于策略迭代算法(policy-iteration) 基于值迭代算法(value-iteration) 一些统计数据和思考 总结">
+<meta property="og:type" content="article">
+<meta property="og:title" content="强化学习基础第四讲笔记">
+<meta property="og:url" content="https://zongjy.github.io/2022/04/04/8d1af2686c76/index.html">
+<meta property="og:site_name" content="zongjy&#39;s blog">
+<meta property="og:description" content="FrozenLake—v1(冰湖)环境解释 基于策略迭代算法(policy-iteration) 基于值迭代算法(value-iteration) 一些统计数据和思考 总结">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://zongjy.github.io/img/frozenlake1.png">
+<meta property="og:image" content="https://zongjy.github.io/img/frozenlake2.png">
+<meta property="og:image" content="https://zongjy.github.io/2022/04/04/8d1af2686c76/%5Cimg%5Cfrozenlake3.png">
+<meta property="article:published_time" content="2022-04-04T04:29:16.060Z">
+<meta property="article:modified_time" content="2022-04-04T04:29:16.060Z">
+<meta property="article:author" content="Zongjy">
+<meta property="article:tag" content="强化学习基础">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://zongjy.github.io/img/frozenlake1.png">
+  
+  
+  <title>强化学习基础第四讲笔记 · zongjy&#39;s blog</title>
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/css/bootstrap.min.css" />
+
+
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/github-markdown-css@4/github-markdown.min.css" />
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/hint.css@2/hint.min.css" />
+
+  
+    
+    
+      
+      <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10/styles/gradient-light.min.css" />
+    
+  
+
+  
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.css" />
+  
+
+
+<!-- 主题依赖的图标库，不要自行修改 -->
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1749284_ba1fz6golrf.css">
+
+
+
+<link rel="stylesheet" href="//at.alicdn.com/t/font_1736178_lbnruvf0jn.css">
+
+
+<link  rel="stylesheet" href="/Zongjy.github.io/css/main.css" />
+
+<!-- 自定义样式保持在最底部 -->
+
+
+  <script id="fluid-configs">
+    var Fluid = window.Fluid || {};
+    var CONFIG = {"hostname":"zongjy.github.io","root":"/Zongjy.github.io/","version":"1.8.14","typing":{"enable":true,"typeSpeed":80,"cursorChar":">","loop":false},"anchorjs":{"enable":true,"element":"h1,h2,h3,h4,h5,h6","placement":"right","visible":"hover","icon":"❡"},"progressbar":{"enable":true,"height_px":3,"color":"#29d","options":{"showSpinner":false,"trickleSpeed":100}},"copy_btn":true,"image_zoom":{"enable":true,"img_url_replace":["",""]},"toc":{"enable":true,"headingSelector":"h1,h2,h3,h4,h5,h6","collapseDepth":0},"lazyload":{"enable":true,"loading_img":"/img/loading.gif","onlypost":false,"offset_factor":2},"web_analytics":{"enable":false,"baidu":null,"google":null,"gtag":null,"tencent":{"sid":null,"cid":null},"woyaola":null,"cnzz":null,"leancloud":{"app_id":null,"app_key":null,"server_url":null,"path":"window.location.pathname","ignore_local":false}},"search_path":"/Zongjy.github.io/local-search.xml"};
+  </script>
+  <script  src="/Zongjy.github.io/js/utils.js" ></script>
+  <script  src="/Zongjy.github.io/js/color-schema.js" ></script>
+<meta name="generator" content="Hexo 6.0.0"></head>
+
+
+<body>
+  <header style="height: 100vh;">
+    <nav id="navbar" class="navbar fixed-top  navbar-expand-lg navbar-dark scrolling-navbar">
+  <div class="container">
+    <a class="navbar-brand" href="/Zongjy.github.io/">
+      <strong>Zongjy&#39;s blog</strong>
+    </a>
+
+    <button id="navbar-toggler-btn" class="navbar-toggler" type="button" data-toggle="collapse"
+            data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <div class="animated-icon"><span></span><span></span><span></span></div>
+    </button>
+
+    <!-- Collapsible content -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto text-center">
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/">
+                <i class="iconfont icon-home-fill"></i>
+                首页
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/archives/">
+                <i class="iconfont icon-archive-fill"></i>
+                归档
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/categories/">
+                <i class="iconfont icon-category-fill"></i>
+                分类
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/tags/">
+                <i class="iconfont icon-tags-fill"></i>
+                标签
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/about/">
+                <i class="iconfont icon-user-fill"></i>
+                关于
+              </a>
+            </li>
+          
+        
+          
+          
+          
+          
+            <li class="nav-item">
+              <a class="nav-link" href="/Zongjy.github.io/links/">
+                <i class="iconfont icon-link-fill"></i>
+                友链
+              </a>
+            </li>
+          
+        
+        
+          <li class="nav-item" id="search-btn">
+            <a class="nav-link" target="_self" href="javascript:;" data-toggle="modal" data-target="#modalSearch" aria-label="Search">
+              &nbsp;<i class="iconfont icon-search"></i>&nbsp;
+            </a>
+          </li>
+        
+        
+          <li class="nav-item" id="color-toggle-btn">
+            <a class="nav-link" target="_self" href="javascript:;" aria-label="Color Toggle">&nbsp;<i
+                class="iconfont icon-dark" id="color-toggle-icon"></i>&nbsp;</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+</nav>
+
+    <div class="banner" id="banner" parallax=true
+         style="background: url('/Zongjy.github.io/img/background.jpg') no-repeat center center;
+           background-size: cover;">
+      <div class="full-bg-img">
+        <div class="mask flex-center" style="background-color: rgba(0, 0, 0, 0.3)">
+          <div class="page-header text-center fade-in-up">
+            <span class="h2" id="subtitle" title="强化学习基础第四讲笔记">
+              
+            </span>
+
+            
+              <div class="mt-3">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-author" aria-hidden="true"></i>
+      zongjy
+    </span>
+  
+  
+    <span class="post-meta">
+      <i class="iconfont icon-date-fill" aria-hidden="true"></i>
+      <time datetime="2022-04-04 12:29" pubdate>
+        2022-04-04
+      </time>
+    </span>
+  
+</div>
+
+<div class="mt-1">
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-chart"></i>
+      6.4k 字
+    </span>
+  
+
+  
+    <span class="post-meta mr-2">
+      <i class="iconfont icon-clock-fill"></i>
+      
+      
+      33 分钟
+    </span>
+  
+
+  
+  
+    
+      <!-- 不蒜子统计文章PV -->
+      <span id="busuanzi_container_page_pv" style="display: none">
+        <i class="iconfont icon-eye" aria-hidden="true"></i>
+        <span id="busuanzi_value_page_pv"></span> 次
+      </span>
+    
+  
+</div>
+
+            
+          </div>
+
+          
+            <div class="scroll-down-bar">
+              <i class="iconfont icon-arrowdown"></i>
+            </div>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    
+      
+
+<div class="container-fluid nopadding-x">
+  <div class="row nomargin-x">
+    <div class="d-none d-lg-block col-lg-2"></div>
+    <div class="col-lg-8 nopadding-x-md">
+      <div class="container nopadding-x-md" id="board-ctn">
+        <div class="py-5" id="board">
+          <article class="post-content mx-auto">
+            <!-- SEO header -->
+            <h1 style="display: none">强化学习基础第四讲笔记</h1>
+            
+              <p class="note note-info">
+                
+                  本文最后更新于：1 个月前
+                
+              </p>
+            
+            <div class="markdown-body">
+              <ul>
+<li>FrozenLake—v1(冰湖)环境解释</li>
+<li>基于策略迭代算法(policy-iteration)</li>
+<li>基于值迭代算法(value-iteration)</li>
+<li>一些统计数据和思考</li>
+<li>总结</li>
+</ul>
+<span id="more"></span>
+<h2 id="frozenlake-v1环境"><a class="markdownIt-Anchor" href="#frozenlake-v1环境"></a> FrozenLake-v1环境</h2>
+<p>先放<a target="_blank" rel="noopener" href="https://github.com/openai/gym/blob/master/gym/envs/toy_text/frozen_lake.py">环境代码</a>和<a target="_blank" rel="noopener" href="https://gym.openai.com/envs/FrozenLake-v0/">官网简介</a>，恕我英文确实不咋地，理解了好久</p>
+<h3 id="综述"><a class="markdownIt-Anchor" href="#综述"></a> 综述</h3>
+<p>简单来说，此模型描述的问题是人物从起点要走到终点，然后地图中存在一些位置是洞，掉进洞或走到终点即游戏结束，<strong>但是由于地很滑(冰湖)，运动方向仅部分取决于选取的动作</strong>(重点，我就是被这个坑到了，不仔细读文档的屑😭😭😭)</p>
+<h3 id="状态空间observation_space"><a class="markdownIt-Anchor" href="#状态空间observation_space"></a> 状态空间(observation_space)</h3>
+<p>以最简单的&quot;4x4&quot;地图为例，起点默认为第一行第一个，终点默认为第四行第四个，中间的洞是随机的，但是起点和终点必然是联通的(环境代码中对于随机生成图是通过宽搜来判定的)，状态空间大小为<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mn>4</mn><mo>∗</mo><mn>4</mn><mo>=</mo><mn>16</mn></mrow><annotation encoding="application/x-tex">4*4=16</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span><span class="mbin">∗</span><span class="mspace" style="margin-right:0.2222222222222222em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">4</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span><span class="mrel">=</span><span class="mspace" style="margin-right:0.2777777777777778em;"></span></span><span class="base"><span class="strut" style="height:0.64444em;vertical-align:0em;"></span><span class="mord">1</span><span class="mord">6</span></span></span></span>，依次按照顺序状态如下：</p>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">0</th>
+<th style="text-align:center">1</th>
+<th style="text-align:center">2</th>
+<th style="text-align:center">3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">4</td>
+<td style="text-align:center">5</td>
+<td style="text-align:center">6</td>
+<td style="text-align:center">7</td>
+</tr>
+<tr>
+<td style="text-align:center">8</td>
+<td style="text-align:center">9</td>
+<td style="text-align:center">10</td>
+<td style="text-align:center">11</td>
+</tr>
+<tr>
+<td style="text-align:center">12</td>
+<td style="text-align:center">13</td>
+<td style="text-align:center">14</td>
+<td style="text-align:center">15</td>
+</tr>
+</tbody>
+</table>
+<p>(Markdown表头自动加粗，懒得改HTML了见谅💦)<br />
+那么<code>observation_space.n</code>即是16(不知道为什么用Pycharm的时候一开始它会报错，说这个n是未定义的特性引用，大概是因为这是这个模型特有的)</p>
+<h3 id="动作空间action_space"><a class="markdownIt-Anchor" href="#动作空间action_space"></a> 动作空间(action_space)</h3>
+<p>对于这个问题，动作只有四种，即：</p>
+<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">LEFT: <span class="hljs-number">0</span>  <br>DOWN: <span class="hljs-number">1</span><br>RIGHT: <span class="hljs-number">2</span><br>UP: <span class="hljs-number">3</span><br></code></pre></div></td></tr></table></figure>
+<h3 id="状态转移概率p"><a class="markdownIt-Anchor" href="#状态转移概率p"></a> 状态转移概率P</h3>
+<p><code>P[state][action]</code>: 指在状态<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>s</mi></mrow><annotation encoding="application/x-tex">s</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">s</span></span></span></span>采取动作<span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>a</mi></mrow><annotation encoding="application/x-tex">a</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:0.43056em;vertical-align:0em;"></span><span class="mord mathdefault">a</span></span></span></span>的状态转移概率，在本题中，由于规则要求，比如选择动作0(即向左)，那么有三分之一的概率向上，三分之一概率向下，和三分之一概率向左。</p>
+<blockquote>
+<p>那么在这里是不是就可以想到，如果我一直让它背对着洞走，是不是就一定能不掉进去呢，事实上策略就是这样，但是会有例如两个洞包夹的情况，那么肯定会有概率滑进洞里，这时候，就需要计算期望值，选择最不容易掉进去的路线行进。</p>
+</blockquote>
+<p>这里的<code>P[state][action]</code>不止包含了状态转移概率，还包含了下一个状态、下一个状态的<code>reward</code>，以及下一个状态是否结束。(列表形式存储)<br />
+<strong>注意：</strong></p>
+<ul>
+<li>在边界上的情况，比如状态1，如果向上运动了，那么相当于停在该点不动</li>
+<li>在终点(状态15)，此处不会再转移到其他状态，奖励为1，其余点奖励均为0</li>
+</ul>
+<p>下图是状态1的所有可能action对应的状态转移<code>P[1][action]</code>：<br />
+<img src="/img/frozenlake1.png" srcset="/Zongjy.github.io/img/loading.gif" lazyload alt="" /></p>
+<p>特别解释一下最后的<code>bool</code>值，因为掉进洞里或者到达终点都视为结束，可以看出状态5是个洞。<br />
+下图是状态15对应的状态转移：<br />
+<img src="/img/frozenlake2.png" srcset="/Zongjy.github.io/img/loading.gif" lazyload alt="" /></p>
+<p>可以看出在终点无论采取什么动作都是不动的，且视为结束</p>
+<h3 id="reset函数"><a class="markdownIt-Anchor" href="#reset函数"></a> <code>reset()</code>函数</h3>
+<p>参数：无<br />
+返回值：起点的<code>state</code>值</p>
+<h3 id="step函数"><a class="markdownIt-Anchor" href="#step函数"></a> <code>step()</code>函数</h3>
+<p>参数：动作<code>action</code><br />
+返回值：执行完<code>action</code>后得到的<code>state</code>(即s’)值、从s到s’获得的<code>reward</code>奖励、是否结束(<code>done</code>,是一个布尔值)</p>
+<h3 id="render函数"><a class="markdownIt-Anchor" href="#render函数"></a> <code>render()</code>函数</h3>
+<p>参数：<code>mode</code>(默认为<code>'human'</code>)<br />
+无返回值，有两种render方法</p>
+<ol>
+<li>一种是text文本方式，环境代码中采用了StringIO读取和输出(至于怎样动画化，像官方文档的视频一样还没弄懂)，对应<code>mode='ansi'</code>。</li>
+<li>第二种是gui形式，利用pygame包将整个过程动画化并演示出来，对应<code>mode='human'</code></li>
+</ol>
+<h2 id="策略迭代算法"><a class="markdownIt-Anchor" href="#策略迭代算法"></a> 策略迭代算法</h2>
+<p>总体思路请参照前述<a href="%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0(%E4%BA%8C).md">策略迭代</a>部分，下面是各步骤源码和一些解释。<br />
+整体为两部分，第一部分是策略迭代，其中包括策略评估(迭代计算状态值函数<code>value_table</code>)和策略改善(通过动作状态值函数q选择最佳策略)，第二部分是对该模型执行策略(<code>run policy</code>)，每轮执行是一个episode。</p>
+<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">evaluate_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        <span class="hljs-comment"># 初始化一个新的v表，注意下面迭代计算v表时使用的+=，所以这里应该将其初始化为0</span><br>        new_value_table = np.zeros(env.observation_space.n)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 从待评估策略中提取动作</span><br>            action = policy[state]<br>            <span class="hljs-comment"># 对每种可能的状态转移过程进行求和得到新v表</span><br>            <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                new_value_table[state] += prob * (reward + gamma * value_table[next_state])<br>        <span class="hljs-comment"># 计算两表误差，当误差小于限定精度时退出迭代</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回待评估策略得到的状态值函数</span><br>    <span class="hljs-keyword">return</span> value_table<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">improve_policy</span>(<span class="hljs-params">env, value_table, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 复制一份旧策略</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化一个q函数，注意大小</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-comment"># 对每个动作求状态动作值函数</span><br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 利用argmax返回q函数的最大值索引，即在state对应的价值最大的action，作为该state的策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 比较新旧策略的每一项，若都相等即退出迭代</span><br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):  <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回改善后的策略</span><br>    <span class="hljs-keyword">return</span> policy<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">policy_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, iterations=<span class="hljs-number">10000</span></span>):<br>    <span class="hljs-comment"># 初始化原始策略，这里选择利用随机的方式</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化原始状态值函数，每个状态均为0</span><br>    value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 计算迭代次数</span><br>    iters = <span class="hljs-number">0</span><br>    <span class="hljs-keyword">for</span> i <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(iterations):<br>        iters += <span class="hljs-number">1</span><br>        old_policy = np.copy(policy)<br>        <span class="hljs-comment"># 策略评估</span><br>        value_table = evaluate_policy(env, value_table, policy, gamma)<br>        <span class="hljs-comment"># 策略改善</span><br>        policy = improve_policy(env, value_table, policy, gamma)<br>        <span class="hljs-keyword">if</span> np.<span class="hljs-built_in">all</span>(policy == old_policy):<br>            <span class="hljs-keyword">break</span><br>    <span class="hljs-comment"># 返回状态值函数，最优策略，策略迭代次数</span><br>    <span class="hljs-keyword">return</span> value_table, policy, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br>    <span class="hljs-comment"># 初始化状态</span><br>    state = env.reset()<br>    <span class="hljs-comment"># 第1帧</span><br>    env.render()<br>    <span class="hljs-comment"># 初始化这一轮episode的总价值和帧数</span><br>    tot_reward, num_step = <span class="hljs-number">0</span>, <span class="hljs-number">1</span><br>    <span class="hljs-keyword">while</span> <span class="hljs-literal">True</span>:<br>        <span class="hljs-comment"># 采用policy中当前state对应的action，得到next_state，回报和终止判断</span><br>        next_state, reward, done, _ = env.step(policy[state])<br>        <span class="hljs-comment"># 可以选择env.render(mode=&#x27;ansi&#x27;)</span><br>        env.render()<br>        <span class="hljs-comment"># 计算总价值，注意该步的价值等于衰减系数的当前帧数次方乘上这一次状态转移的回报</span><br>        tot_reward += gamma ** num_step * reward<br>        num_step += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">if</span> done:<br>            <span class="hljs-keyword">break</span><br>        <span class="hljs-comment"># 更新状态</span><br>        state = next_state<br>    <span class="hljs-comment"># 返回总价值和结束时的帧数</span><br>    <span class="hljs-keyword">return</span> tot_reward, num_step<br><br><br>env = gym.make(<span class="hljs-string">&#x27;FrozenLake-v1&#x27;</span>, desc=<span class="hljs-literal">None</span>, map_name=<span class="hljs-string">&quot;4x4&quot;</span>) <span class="hljs-comment"># 使用默认的4x4地图</span><br><span class="hljs-comment"># 衰减系数</span><br>gamma = <span class="hljs-number">1.0</span><br><span class="hljs-comment"># 策略迭代</span><br>value, policy, iters = policy_iterate(env, iterations=<span class="hljs-number">1000</span>)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;policy:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(policy)<br><span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;iterations:&#x27;</span>,end=<span class="hljs-string">&#x27;&#x27;</span>)<br><span class="hljs-built_in">print</span>(iters)<br><span class="hljs-keyword">for</span> episode <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(<span class="hljs-number">1</span>):<br>    cum_reward, nsteps = run_policy(env, policy)<br>    <span class="hljs-built_in">print</span>(<span class="hljs-string">&#x27;Episode &#123;&#125;:\nreward:&#123;&#125;\tsteps:&#123;&#125;&#x27;</span>.<span class="hljs-built_in">format</span>(episode + <span class="hljs-number">1</span>, cum_reward, nsteps))<br></code></pre></div></td></tr></table></figure>
+<p>对于numpy包，有时间会记录一些学习笔记，这里放一个<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/">官方教程</a>,这是一个很好的处理多维数据(譬如对于复杂的多维状态空间，动作空间，或者说数据处理统计分类时起很大的作用)的包，在安装anaconda时会同时附加安装。</p>
+<p>另外需要注意一点，初始化策略时，这里使用的是<code>np.random.randint</code>，所以策略中的动作均为整数符合条件，如果用<code>np.zeros</code>初始化，注意要将默认参数改为<code>dtype='int'</code>(默认为<code>float64</code>型)</p>
+<h2 id="值函数迭代"><a class="markdownIt-Anchor" href="#值函数迭代"></a> 值函数迭代</h2>
+<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python"><span class="hljs-keyword">import</span> gym<br><span class="hljs-keyword">import</span> numpy <span class="hljs-keyword">as</span> np<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">value_iterate</span>(<span class="hljs-params">env, gamma=<span class="hljs-number">1.0</span>, theta=<span class="hljs-number">1e-4</span></span>):<br>    <span class="hljs-comment"># 初始化策略</span><br>    policy = np.random.randint(low=<span class="hljs-number">0</span>, high=env.action_space.n, size=env.observation_space.n)<br>    <span class="hljs-comment"># 初始化值函数，这里可以在循环外只初始化依次用于迭代的表是因为下面使用的是max进行赋值，而区别于策略迭代的+=</span><br>    value_table = np.zeros(env.observation_space.n)<br>    new_value_table = np.zeros(env.observation_space.n)<br>    <span class="hljs-comment"># 迭代次数和迭代误差</span><br>    iters = <span class="hljs-number">0</span><br>    delta = <span class="hljs-number">2</span> * theta<br>    <span class="hljs-keyword">while</span> delta &gt; theta:<br>        iters += <span class="hljs-number">1</span><br>        <span class="hljs-keyword">for</span> state <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.observation_space.n):<br>            <span class="hljs-comment"># 初始化q函数</span><br>            q_value = np.zeros(env.action_space.n)<br>            <span class="hljs-keyword">for</span> action <span class="hljs-keyword">in</span> <span class="hljs-built_in">range</span>(env.action_space.n):<br>                <span class="hljs-keyword">for</span> prob, next_state, reward, done <span class="hljs-keyword">in</span> env.P[state][action]:<br>                    q_value[action] += prob * (reward + gamma * value_table[next_state])<br>            <span class="hljs-comment"># 选取q函数中价值最大的action，用于更新v表，即相当于只迭代评估计算一次v表立即进行策略改进</span><br>            new_value_table[state] = <span class="hljs-built_in">max</span>(q_value)<br>            <span class="hljs-comment"># 找q函数的最大值索引，更新策略</span><br>            policy[state] = np.argmax(q_value)<br>        <span class="hljs-comment"># 计算迭代前后v表误差</span><br>        delta = <span class="hljs-built_in">sum</span>(np.fabs(new_value_table - value_table))<br>        <span class="hljs-comment"># 更新v表,注意要用copy进行拷贝</span><br>        value_table = np.copy(new_value_table)<br>    <span class="hljs-comment"># 返回策略，值函数和值迭代次数</span><br>    <span class="hljs-keyword">return</span> policy, value_table, iters<br><br><br><span class="hljs-keyword">def</span> <span class="hljs-title function_">run_policy</span>(<span class="hljs-params">env, policy, gamma=<span class="hljs-number">1.0</span></span>):<br><span class="hljs-comment"># 同策略迭代</span><br></code></pre></div></td></tr></table></figure>
+<p>需要注意的是更新值函数时都需要用copy，而不是直接赋值(srds我也不知道为什么策略迭代直接赋值不会出问题)，原因是python的一些特性：</p>
+<blockquote>
+<p>Python 赋值过程中不明确区分拷贝和引用，一般对静态变量的传递为拷贝，对动态变量的传递为引用。（注，对静态变量首次传递时也是引用，当需要修改静态变量时，因为静态变量不能改变，所以需要生成一个新的空间存储数据）。</p>
+</blockquote>
+<p>而这里使用copy即是将ndarray数组进行了深拷贝，完全的创立了副本。<br />
+<em>参考文章：<a target="_blank" rel="noopener" href="https://www.runoob.com/w3cnote/python-variable-references-and-copies.html">runoob</a>、<a target="_blank" rel="noopener" href="https://www.numpy.org.cn/user/quickstart.html#%E6%8B%B7%E8%B4%9D%E5%92%8C%E8%A7%86%E5%9B%BE">numpy</a></em></p>
+<h2 id="对于4x4地图的结果及分析"><a class="markdownIt-Anchor" href="#对于4x4地图的结果及分析"></a> 对于4x4地图的结果及分析</h2>
+<h3 id="默认4x4图"><a class="markdownIt-Anchor" href="#默认4x4图"></a> 默认4x4图</h3>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">S</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">F</th>
+<th style="text-align:center">F</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">H</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">H</td>
+</tr>
+<tr>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">H</td>
+</tr>
+<tr>
+<td style="text-align:center">H</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">F</td>
+<td style="text-align:center">G</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li>S: starting point, safe(起点)</li>
+<li>F: frozen surface, safe(冰面)</li>
+<li>H: hole, fall to your doom(洞)</li>
+<li>G: goal(终点)</li>
+</ul>
+<h3 id="最佳策略和gui演示"><a class="markdownIt-Anchor" href="#最佳策略和gui演示"></a> 最佳策略和GUI演示</h3>
+<figure class="highlight python"><table><tr><td class="gutter hljs"><div class="hljs code-wrapper"><pre><span class="line">1</span><br></pre></div></td><td class="code"><div class="hljs code-wrapper"><pre><code class="hljs python">policy:[<span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">3</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">3</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">0</span> <span class="hljs-number">2</span> <span class="hljs-number">1</span> <span class="hljs-number">0</span>]<br></code></pre></div></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://www.bilibili.com/video/BV1MZ4y1U7ab?share_source=copy_web">视频演示</a><br />
+别骂了别骂了，什么dplayer插件是真的用不来啊😤😤，捏麻麻的折腾了一下午都没弄懂，有会的大佬就帮助一下吧。。。<br />
+另外可以看到pycharm是会警告的，原因是这个环境中调用的<code>distutils.spawn</code>即将在<code>python3.12</code>移除(现已废弃)，但不妨碍正常运行。</p>
+<h3 id="一些定性分析"><a class="markdownIt-Anchor" href="#一些定性分析"></a> 一些定性分析</h3>
+<p>定量一点的分析咱就不做了，前前后后也倒腾了四天，那些什么用csv格式绘表啊，或者用matplotlib来实现可视化咱也就不做了，属于是啥都不知道的fw了😅<br />
+在这里也放一份大佬的<a target="_blank" rel="noopener" href="https://machinelearningjourney.com/index.php/2020/07/02/frozenlake/">博客</a>(注意他的项目文件啥的在文章里有链接，我就不贴了，有兴趣可以看一看,他是采用的SARSA算法进行学习的)<br />
+我这里就&quot;盗用&quot;一张这位大佬用matplotlib绘制的一个在FrozenLake-v1中的图(在他的analysis.py文件中可以看到绘制方法，顺带着他还绘制了<code>value_table</code>的图)，在实验中也可以发现，如果单个episode走了100步，<code>step</code>函数也会返回终止为<code>True</code>，至于为什么我也不知道，环境代码中没有给出相应的解释。<br />
+<img src="%5Cimg%5Cfrozenlake3.png" srcset="/Zongjy.github.io/img/loading.gif" lazyload alt="" /></p>
+<h2 id="总结"><a class="markdownIt-Anchor" href="#总结"></a> 总结</h2>
+<ul>
+<li>不打不知道，<s>我是真的蠢</s>，一切模型算法实验都要亲自上手，才能够逐步理解，我在自己照猫画虎写了策略迭代算法后，发现了各种我不认识的错误，包括<code>numpy</code>包的一些不会的地方，包括环境代码的解读，也包括怎样跑策略，将其可视化，或者整理数据，等等</li>
+<li>虽然花了很多心思，而且这只是一个OpenAI gym里的“easy”的模型😢，但是万事开头难嘛，总得要有开头，生命不止，折腾不息😋😋</li>
+<li>强推Sutton和Barto的书，就是有点小贵()</li>
+<li>我的ddl我对不起你！这就来伺候您老人家😍😍</li>
+</ul>
+<h3 id="参考文章"><a class="markdownIt-Anchor" href="#参考文章"></a> 参考文章</h3>
+<ul>
+<li><a target="_blank" rel="noopener" href="https://machinelearningjourney.com/index.php/2020/07/02/frozenlake/">Machine Learning Journey</a></li>
+<li><a target="_blank" rel="noopener" href="https://blog.csdn.net/SL_World/article/details/107943298?utm_medium=distribute.pc_relevant.none-task-blog-2~default~baidujs_title~default-0.pc_relevant_default&amp;spm=1001.2101.3001.4242.1&amp;utm_relevant_index=3">CSDN</a></li>
+</ul>
+
+            </div>
+            <hr>
+            <div>
+              <div class="post-metas mb-3">
+                
+                
+                  <div class="post-meta">
+                    <i class="iconfont icon-tags"></i>
+                    
+                      <a class="hover-with-bg" href="/Zongjy.github.io/tags/%E5%BC%BA%E5%8C%96%E5%AD%A6%E4%B9%A0%E5%9F%BA%E7%A1%80/">强化学习基础</a>
+                    
+                  </div>
+                
+              </div>
+              
+                <p class="note note-warning">
+                  
+                    本博客所有文章除特别声明外，均采用 <a target="_blank" href="https://creativecommons.org/licenses/by-sa/4.0/deed.zh" rel="nofollow noopener noopener">CC BY-SA 4.0 协议</a> ，转载请注明出处！
+                  
+                </p>
+              
+              
+                <div class="post-prevnext">
+                  <article class="post-prev col-6">
+                    
+                    
+                      <a href="/Zongjy.github.io/2022/04/05/a46989d825cc/">
+                        <i class="iconfont icon-arrowleft"></i>
+                        <span class="hidden-mobile">清明小记</span>
+                        <span class="visible-mobile">上一篇</span>
+                      </a>
+                    
+                  </article>
+                  <article class="post-next col-6">
+                    
+                    
+                      <a href="/Zongjy.github.io/2022/03/29/6052a53e5e91/">
+                        <span class="hidden-mobile">C语言笔记(二)</span>
+                        <span class="visible-mobile">下一篇</span>
+                        <i class="iconfont icon-arrowright"></i>
+                      </a>
+                    
+                  </article>
+                </div>
+              
+            </div>
+
+            
+          </article>
+        </div>
+      </div>
+    </div>
+    
+      <div class="d-none d-lg-block col-lg-2 toc-container" id="toc-ctn">
+        <div id="toc">
+  <p class="toc-header"><i class="iconfont icon-list"></i>&nbsp;目录</p>
+  <div class="toc-body" id="toc-body"></div>
+</div>
+
+      </div>
+    
+  </div>
+</div>
+
+<!-- Custom -->
+
+
+    
+
+    
+      <a id="scroll-top-button" aria-label="TOP" href="#" role="button">
+        <i class="iconfont icon-arrowup" aria-hidden="true"></i>
+      </a>
+    
+
+    
+      <div class="modal fade" id="modalSearch" tabindex="-1" role="dialog" aria-labelledby="ModalLabel"
+     aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header text-center">
+        <h4 class="modal-title w-100 font-weight-bold">搜索</h4>
+        <button type="button" id="local-search-close" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body mx-3">
+        <div class="md-form mb-5">
+          <input type="text" id="local-search-input" class="form-control validate">
+          <label data-error="x" data-success="v"
+                 for="local-search-input">关键词</label>
+        </div>
+        <div class="list-group" id="local-search-result"></div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+
+    
+  </main>
+
+  <footer class="text-center mt-5 py-3">
+  <div class="footer-content">
+     <a href="https://hexo.io" target="_blank" rel="nofollow noopener"><span>Hexo</span></a> <i class="iconfont icon-love"></i> <a href="https://github.com/fluid-dev/hexo-theme-fluid" target="_blank" rel="nofollow noopener"><span>Fluid</span></a> <div style="font-size: 0.85rem"> <span id="timeDate">载入天数...</span> <span id="times">载入时分秒...</span> <script src="/js/duration.js"></script> </div> 
+  </div>
+  
+  <div class="statistics">
+    
+    
+
+    
+      
+        <!-- 不蒜子统计PV -->
+        <span id="busuanzi_container_site_pv" style="display: none">
+            总访问量 
+            <span id="busuanzi_value_site_pv"></span>
+             次
+          </span>
+      
+      
+        <!-- 不蒜子统计UV -->
+        <span id="busuanzi_container_site_uv" style="display: none">
+            总访客数 
+            <span id="busuanzi_value_site_uv"></span>
+             人
+          </span>
+      
+    
+  </div>
+
+
+  
+
+  
+</footer>
+
+
+  <!-- SCRIPTS -->
+  
+  <script  src="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.js" ></script>
+  <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/nprogress@0/nprogress.min.css" />
+
+  <script>
+    NProgress.configure({"showSpinner":false,"trickleSpeed":100})
+    NProgress.start()
+    window.addEventListener('load', function() {
+      NProgress.done();
+    })
+  </script>
+
+
+<script  src="https://cdn.jsdelivr.net/npm/jquery@3/dist/jquery.min.js" ></script>
+<script  src="https://cdn.jsdelivr.net/npm/bootstrap@4/dist/js/bootstrap.min.js" ></script>
+<script  src="/Zongjy.github.io/js/events.js" ></script>
+<script  src="/Zongjy.github.io/js/plugins.js" ></script>
+
+<!-- Plugins -->
+
+
+  <script  src="/Zongjy.github.io/js/local-search.js" ></script>
+
+
+
+  
+    <script  src="/Zongjy.github.io/js/img-lazyload.js" ></script>
+  
+
+
+
+  
+
+
+
+  
+    <script  src="https://cdn.jsdelivr.net/npm/tocbot@4/dist/tocbot.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@3/dist/jquery.fancybox.min.js" ></script>
+  
+  
+    <script  src="https://cdn.jsdelivr.net/npm/anchor-js@4/anchor.min.js" ></script>
+  
+  
+    <script defer src="https://cdn.jsdelivr.net/npm/clipboard@2/dist/clipboard.min.js" ></script>
+  
+
+
+
+  <script defer src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" ></script>
+
+
+
+
+  <script  src="https://cdn.jsdelivr.net/npm/typed.js@2/lib/typed.min.js" ></script>
+  <script>
+    (function (window, document) {
+      var typing = Fluid.plugins.typing;
+      var title = document.getElementById('subtitle').title;
+      
+        typing(title);
+      
+    })(window, document);
+  </script>
+
+
+
+
+
+  
+
+  
+    <!-- KaTeX -->
+    <link  rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0/dist/katex.min.css" />
+  
+
+
+
+
+
+
+
+
+
+
+
+<!-- 主题的启动项 保持在最底部 -->
+<script  src="/Zongjy.github.io/js/boot.js" ></script>
+
+
+</body>
+</html>
