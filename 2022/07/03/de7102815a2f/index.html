@@ -353,6 +353,10 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DulNode</span> &#123;<br>    ElemType        data;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DulNode</span>  *prior;<br>    <span class="hljs-keyword">struct</span> <span class="hljs-title class_">DulNode</span>  *next;<br>&#125;DulNode, *DuLinkList;<br></code></pre></td></tr></table></figure>
 <p>而同样的，双向链表的删除和插入需要同时修改两个方向的指针，复杂度仍为 <span class="katex"><span class="katex-mathml"><math><semantics><mrow><mi>O</mi><mo stretchy="false">(</mo><mi>n</mi><mo stretchy="false">)</mo></mrow><annotation encoding="application/x-tex">O(n)</annotation></semantics></math></span><span class="katex-html" aria-hidden="true"><span class="base"><span class="strut" style="height:1em;vertical-align:-0.25em;"></span><span class="mord mathdefault" style="margin-right:0.02778em;">O</span><span class="mopen">(</span><span class="mord mathdefault">n</span><span class="mclose">)</span></span></span></span>：</p>
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">Status <span class="hljs-title">ListDelete_DuL</span><span class="hljs-params">(DuLinkList &amp;L, <span class="hljs-type">int</span> i, ElemType &amp;e)</span></span>&#123;<br>    <span class="hljs-comment">//删除带头结点的双链循环线性表L的第i个元素，i的合法值为[1,length]</span><br>    <span class="hljs-keyword">if</span>(!(ElemType* p = <span class="hljs-built_in">GetElemP_DuL</span>(L, i)))   <span class="hljs-comment">//在L中确定第i个元素的位置指针</span><br>        <span class="hljs-keyword">return</span> ERROR;               <span class="hljs-comment">//p = nullptr,即第i个元素不存在</span><br>    e = p-&gt;data;<br>    p-&gt;prior-&gt;next = p-&gt;next;<br>    p-&gt;next-&gt;prior = p-&gt;prior;<br>    <span class="hljs-built_in">free</span>(p);<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<span class="hljs-comment">// ListDelete_DuL</span><br></code></pre></td></tr></table></figure>
+<h2 id="二-栈和队列"><a class="markdownIt-Anchor" href="#二-栈和队列"></a> 二、栈和队列</h2>
+<h3 id="栈的定义"><a class="markdownIt-Anchor" href="#栈的定义"></a> 栈的定义</h3>
+<p>栈 ``</p>
+
               
             </div>
             <hr/>
@@ -434,8 +438,8 @@
                   <article class="post-next col-6">
                     
                     
-                      <a href="/2022/06/17/40b5f3314466/" title="两性心理学结课作业">
-                        <span class="hidden-mobile">两性心理学结课作业</span>
+                      <a href="/2022/06/29/d8aba3fb2c22/" title="强化学习期末作业详解">
+                        <span class="hidden-mobile">强化学习期末作业详解</span>
                         <span class="visible-mobile">下一篇</span>
                         <i class="iconfont icon-arrowright"></i>
                       </a>
