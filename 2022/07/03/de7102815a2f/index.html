@@ -355,8 +355,10 @@
 <figure class="highlight c++"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><code class="hljs C++"><span class="hljs-function">Status <span class="hljs-title">ListDelete_DuL</span><span class="hljs-params">(DuLinkList &amp;L, <span class="hljs-type">int</span> i, ElemType &amp;e)</span></span>&#123;<br>    <span class="hljs-comment">//删除带头结点的双链循环线性表L的第i个元素，i的合法值为[1,length]</span><br>    <span class="hljs-keyword">if</span>(!(ElemType* p = <span class="hljs-built_in">GetElemP_DuL</span>(L, i)))   <span class="hljs-comment">//在L中确定第i个元素的位置指针</span><br>        <span class="hljs-keyword">return</span> ERROR;               <span class="hljs-comment">//p = nullptr,即第i个元素不存在</span><br>    e = p-&gt;data;<br>    p-&gt;prior-&gt;next = p-&gt;next;<br>    p-&gt;next-&gt;prior = p-&gt;prior;<br>    <span class="hljs-built_in">free</span>(p);<br>    <span class="hljs-keyword">return</span> OK;<br>&#125;<span class="hljs-comment">// ListDelete_DuL</span><br></code></pre></td></tr></table></figure>
 <h2 id="二-栈和队列"><a class="markdownIt-Anchor" href="#二-栈和队列"></a> 二、栈和队列</h2>
 <h3 id="栈的定义"><a class="markdownIt-Anchor" href="#栈的定义"></a> 栈的定义</h3>
-<p>栈 ``</p>
-
+<p>栈</p>
+<div class="note note-info">
+            <p>最近在看<code>DL</code>先鸽一下</p>
+          </div>
               
             </div>
             <hr/>
